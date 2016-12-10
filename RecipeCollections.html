@@ -155,7 +155,7 @@ function selectFunction(list, objField, condition) {
 		console.log(condition.replace(/\"/g, ""))
 		console.log("************")
 
-		if(stringify(list[i][objField]) == condition) {
+		if(stringify(list[i][objField]) == stringify(condition)) {
 		selectedItems.push(list[i]);
 		}
 	}
