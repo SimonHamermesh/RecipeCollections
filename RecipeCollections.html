@@ -28,7 +28,7 @@
 	<input type="button" id="collect" onclick="buttonCallCollectFunction()" value ="Collect"/>
 	<input type="button" id="collect2" onclick="buttonCallCollectTwoFunction()" value ="CollectTwo"/>
 	<input type="button" id="detect" onclick="buttonCallDetectFunction()" value ="Detect"/>
-	<input type="button" id="detect" onclick="buttonCallDetectTwoFunction()" value ="DetectTwo"/>
+	<input type="button" id="detect2" onclick="buttonCallDetectTwoFunction()" value ="DetectTwo"/>
 	<input type="button" id="select" onclick="buttonCallSelectFunction()" value ="Select"/>
 	<input type="button" id="select" onclick="buttonCallSelectTwoFunction()" value ="SelectTwo"/>
 </form>
@@ -86,7 +86,7 @@ function buttonCallCollectTwoFunction() {
 function stringify(thingToString) { return JSON.stringify(thingToString); }
 
 function detectFunction(list, objField, condition) {
-	var detected = "<H1>FALSE</H1>";	
+	var detected = false;	
 	
 	for(i=0; i<list.length; i++) {
 		
@@ -96,7 +96,7 @@ function detectFunction(list, objField, condition) {
 		console.log(condition.replace(/\"/g, ""))
 
 		if(stringify(list[i][objField]) == condition) {
-			detected = "<H1>TRUE<H1>";
+			detected = true;
 			break;	
 		}
 	}	
@@ -145,17 +145,15 @@ function selectFunction(list, objField, condition) {
 	for(i=0; i<list.length; i++) {
 
 		console.log("************")
-		console.log(list)
 		console.log(objField)
 		console.log(condition)
-
 		console.log(stringify(list[i][objField]))
 		console.log(stringify(list[i]))
 		console.log(stringify(condition))
 		console.log(condition.replace(/\"/g, ""))
 		console.log("************")
 
-		if(stringify(list[i][objField]) == stringify(condition)) {
+		if(stringify(list[i][objField]) == condition) {
 		selectedItems.push(list[i]);
 		}
 	}
@@ -208,18 +206,24 @@ function buttonCallSelectTwoFunction() {
 }
 
 
+function detectForDuplicates(list, condition) {
+	var detected = false;	
+	
+	for(i=0; i<list.length; i++) {
+		if(stringify(list[i]) == stringify(condition)) {
+			detected = true;
+			break;	
+		}
+	}	
+
+	return detected;
+}
+
 function rejectDuplicatesFunction() {
 	var noDuplicateItems = [];
 
-	for(i=0; i<recipes.length; i++) {
-		var isNotDuplicate = true;	
-			for(j=0; j<noDuplicateItems.length; j++) {
-				if(stringify(recipes[i]) == stringify(noDuplicateItems[j])) {
-				isNotDuplicate = false;
-				break;
-				}
-			}
-		{if(isNotDuplicate) 
+	for(i=0; i<recipes.length; i++) {	
+		{if(!detectForDuplicates(noDuplicateItems, recipes[i])) 
 		noDuplicateItems.push(recipes[i]); 
 		}
 	}
