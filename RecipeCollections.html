@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">   
+<script type="text/javascript" src="js/recipes.js"></script> 
+
+    <title>Grandmas Recipes</title>
+</head>
+<body>
+    <header class="main-header group">
+        <div class="title"><h1>Grandmas Recipes</h1></div>
+    </header>
+
+<form>
+	<div id="part1" style="float:left">
+	<input type="text" id="field1" name="field1">FIELD 1</input>
+	<br>
+	<input type="text" id="condition1" name="condition1">CONDITION 1</input>
+	<br>
+	</div>
+	<div id="part2" style="float:right">
+	<input type="text" id="field2" name="field2">FIELD 2</input>
+	<br>
+	<input type="text" id="condition2" name="condition2">CONDITION 2</input>
+	<br>
+	</div>
+	<hr>
+	<input type="button" id="collect" onclick="buttonCallCollectFunction()" value ="Collect"/>
+	<input type="button" id="collect2" onclick="buttonCallCollectTwoFunction()" value ="CollectTwo"/>
+	<input type="button" id="detect" onclick="buttonCallDetectFunction()" value ="Detect"/>
+	<input type="button" id="detect" onclick="buttonCallDetectTwoFunction()" value ="DetectTwo"/>
+	<input type="button" id="select" onclick="buttonCallSelectFunction()" value ="Select"/>
+	<input type="button" id="select" onclick="buttonCallSelectTwoFunction()" value ="SelectTwo"/>
+</form>
+<br>
+<hr>
+<br>
+<input type="button" id="collect" onclick="rejectDuplicatesFunction()" value ="Reject Duplicates"/>
+
+<p id="boolean"></p>
+
+<br>
+<br>
+<hr>
+<div id="recipeList" style="overflow:scroll; float: left; width: 50%; height: 100%"></div>
+<div id="resultList" style="overflow:scroll; float:right; width: 50%; height: 100%"></div>
+
+<!-- ********************** -->
+
+<!-- ********************** -->
+
+<!-- ********************** -->
+
+<script type="text/javascript">
+
+document.getElementById("recipeList").innerHTML = JSON.stringify(recipes);
+
+
+function collectFunction(list, objField) {
+	var collectedItems = [];
+	
+	for(i=0; i<list.length; i++) {
+		collectedItems.push(list[i][objField]);
+	}
+	
+	return collectedItems;
+}
+
+function buttonCallCollectFunction() {
+	var field1 = [document.getElementById("field1").value];
+	var collectedItems = collectFunction(recipes, field1);
+	
+	document.getElementById("resultList").innerHTML = JSON.stringify(collectedItems);
+}
+
+function buttonCallCollectTwoFunction() {
+	var field1 = [document.getElementById("field1").value];
+	var firstCollectedItems = collectFunction(recipes, field1)
+
+	var field2 = [document.getElementById("field2").value];
+	var secondCollectedItems = collectFunction(firstCollectedItems , field2); 
+
+	document.getElementById("resultList").innerHTML = JSON.stringify(secondCollectedItems);
+}
+
+function stringify(thingToString) { return JSON.stringify(thingToString); }
+
+function detectFunction(list, objField, condition) {
+	var detected = "<H1>FALSE</H1>";	
+	
+	for(i=0; i<list.length; i++) {
+		
+		console.log(stringify(list[i][objField]))
+		console.log(condition)
+		console.log(stringify(condition))
+		console.log(condition.replace(/\"/g, ""))
+
+		if(stringify(list[i][objField]) == condition) {
+			detected = "<H1>TRUE<H1>";
+			break;	
+		}
+	}	
+
+	return detected;
+}
+
+function buttonCallDetectFunction() {
+	var field1 = document.getElementById("field1").value;
+	var condition1 = document.getElementById("condition1").value;
+	var detected = detectFunction(recipes, field1, condition1);
+	document.getElementById("boolean").innerHTML = detected;
+}
+
+function detectTwoFunction(list, objField1, objField2, condition) {
+	var detected = "<H1>FALSE</H1>";	
+	
+	for(i=0; i<list.length; i++) {
+		
+		console.log(stringify(list[i][objField1][objField2]))
+		console.log(condition)
+		console.log(stringify(condition))
+		console.log(condition.replace(/\"/g, ""))
+
+		if(stringify(list[i][objField1][objField2]) == stringify(condition)) {
+			detected = "<H1>TRUE<H1>";
+			break;	
+		}
+	}	
+
+	return detected;
+}
+
+function buttonCallDetectTwoFunction() {
+	var field1 = [document.getElementById("field1").value];
+	var field2 = [document.getElementById("field2").value];
+	var condition2 = document.getElementById("condition2").value;
+	
+	var detected = detectTwoFunction(recipes, field1, field2, condition2);
+	document.getElementById("boolean").innerHTML = detected;
+}
+
+function selectFunction(list, objField, condition) {
+	var selectedItems = [];
+
+	for(i=0; i<list.length; i++) {
+
+		console.log("************")
+		console.log(list)
+		console.log(objField)
+		console.log(condition)
+
+		console.log(stringify(list[i][objField]))
+		console.log(stringify(list[i]))
+		console.log(stringify(condition))
+		console.log(condition.replace(/\"/g, ""))
+		console.log("************")
+
+		if(stringify(list[i][objField]) == condition) {
+		selectedItems.push(list[i]);
+		}
+	}
+
+	return selectedItems;
+}
+
+function buttonCallSelectFunction() {
+	var field1 = document.getElementById("field1").value;
+	var condition1 = document.getElementById("condition1").value;
+	var selectedItems = selectFunction(recipes, field1, condition1);
+
+	document.getElementById("resultList").innerHTML = JSON.stringify(selectedItems);
+}
+
+
+function selectTwoFunction(list, objField1, objField2, condition) {
+	var selectedItems = [];
+
+	for(i=0; i<list.length; i++) {
+
+		console.log("************")
+		console.log(list)
+		console.log(condition)
+
+		console.log(stringify(list[i][objField1][objField2]))
+		console.log(stringify(list[i]))
+		console.log(stringify(condition))
+		console.log(condition.replace(/\"/g, ""))
+		console.log("************")
+
+		if(stringify(list[i][objField1][objField2]) == stringify(condition)) {
+		selectedItems.push(list[i]);
+		}
+	}
+
+	return selectedItems;
+}
+
+function buttonCallSelectTwoFunction() {
+	var field1 = document.getElementById("field1").value;
+	var condition1 = document.getElementById("condition1").value;
+	var firstSelectedList = selectFunction(recipes, field1, condition1);
+
+	var field2 = document.getElementById("field2").value;		
+	var condition2 = document.getElementById("condition2").value;
+	var selectedItems = selectTwoFunction(firstSelectedList, field1, field2, condition2);
+
+	document.getElementById("resultList").innerHTML = JSON.stringify(selectedItems);
+}
+
+
+function rejectDuplicatesFunction() {
+	var noDuplicateItems = [];
+
+	for(i=0; i<recipes.length; i++) {
+		var isNotDuplicate = true;	
+			for(j=0; j<noDuplicateItems.length; j++) {
+				if(stringify(recipes[i]) == stringify(noDuplicateItems[j])) {
+				isNotDuplicate = false;
+				break;
+				}
+			}
+		{if(isNotDuplicate) 
+		noDuplicateItems.push(recipes[i]); 
+		}
+	}
+
+	document.getElementById("resultList").innerHTML = JSON.stringify(noDuplicateItems, null, " ");
+}
+
+
+</script>
+
+</body>
+</html>
