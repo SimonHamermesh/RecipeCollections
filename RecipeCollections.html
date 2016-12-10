@@ -169,7 +169,6 @@ function buttonCallSelectFunction() {
 	document.getElementById("resultList").innerHTML = JSON.stringify(selectedItems);
 }
 
-
 function selectTwoFunction(list, objField1, objField2, condition) {
 	var selectedItems = [];
 
@@ -205,13 +204,12 @@ function buttonCallSelectTwoFunction() {
 	document.getElementById("resultList").innerHTML = JSON.stringify(selectedItems);
 }
 
-
 function detectForDuplicates(list, condition) {
-	var detected = false;	
+	var detected = true;	
 	
-	for(i=0; i<list.length; i++) {
-		if(stringify(list[i]) == stringify(condition)) {
-			detected = true;
+	for(j=0; j<list.length; j++) {
+		if(stringify(list[j]) == stringify(condition)) {
+			detected = false;
 			break;	
 		}
 	}	
@@ -223,7 +221,7 @@ function rejectDuplicatesFunction() {
 	var noDuplicateItems = [];
 
 	for(i=0; i<recipes.length; i++) {	
-		{if(!detectForDuplicates(noDuplicateItems, recipes[i])) 
+		{if(detectForDuplicates(noDuplicateItems, recipes[i])) 
 		noDuplicateItems.push(recipes[i]); 
 		}
 	}
